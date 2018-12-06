@@ -22,6 +22,7 @@ class Retractor(FilterWithoutDialog):
 			'en': u'Retractor',
 			'de': u'Retraktor',
 			'fr': u'Retracteur',
+			'zh': u'📐直线化',
 		})
 		self.keyboardShortcut = None # With Cmd+Shift
 
