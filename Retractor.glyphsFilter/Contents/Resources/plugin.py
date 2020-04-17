@@ -1,4 +1,5 @@
 # encoding: utf-8
+from __future__ import division, print_function, unicode_literals
 
 ###########################################################################################################
 #
@@ -17,15 +18,18 @@ from GlyphsApp.plugins import *
 
 class Retractor(FilterWithoutDialog):
 	
+	@objc.python_method
 	def settings(self):
 		self.menuName = Glyphs.localize({
-			'en': u'Retractor',
-			'de': u'Retraktor',
-			'fr': u'Retracteur',
-			'zh': u'📐直线化',
+			'en': 'Retractor',
+			'de': 'Retraktor',
+			'fr': 'Retracteur',
+			'es': 'Retractor',
+			'zh': '📐直线化',
 		})
 		self.keyboardShortcut = None # With Cmd+Shift
 
+	@objc.python_method
 	def filter(self, layer, inEditView, customParameters):
 		selection = layer.selection
 		selectionCounts = inEditView and bool(selection)
@@ -34,25 +38,28 @@ class Retractor(FilterWithoutDialog):
 			for x in reversed( range( len( thisPath.nodes ))):
 				thisNode = thisPath.nodes[x]
 				if not selectionCounts:
-					if thisNode.type == OFFCURVE: # GSOFFCURVE
+					if thisNode.type == OFFCURVE:
 						del thisPath.nodes[x]
 					else:
-						thisNode.type = LINE # GSLINE
+						thisNode.type = LINE
 				elif selectionCounts:
+					prevNode = thisPath.nodes[x-1]
+					nextNode = thisPath.nodes[x+1]
 					if thisNode.type != OFFCURVE:
-						if thisNode.prevNode.type == OFFCURVE and thisNode.prevNode in selection:
-							thisNode.type = LINE # GSLINE
+						if prevNode.type == OFFCURVE and prevNode in selection:
+							thisNode.type = LINE
 					elif thisNode.type == OFFCURVE:
 						if thisNode in selection:
-							if thisNode.nextNode.type == OFFCURVE:
+							if nextNode.type == OFFCURVE:
 								del thisPath.nodes[x+1]
 							del thisPath.nodes[x]
 							thisPath.nodes[x].type = LINE
-						elif thisNode.prevNode.type != OFFCURVE and thisNode.nextNode.type != OFFCURVE:
+						elif prevNode.type != OFFCURVE and nextNode.type != OFFCURVE:
 							del thisPath.nodes[x]
 					
 			thisPath.checkConnections()
 	
+	@objc.python_method
 	def __file__(self):
 		"""Please leave this method unchanged"""
 		return __file__
