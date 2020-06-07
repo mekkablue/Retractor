@@ -2,6 +2,8 @@
 
 This is a plugin for the [Glyphs font editor](http://glyphsapp.com/). It deletes (‘retracts’) all Bézier control points (a.k.a. BCPs, handles), making sure only straight line segments remain. This can be useful if you want to be certain that accidentally added curve segments are removed in designs where this is necessary. 
 
+![Retractor](Retractor.png)
+
 ### Installation
 
 1. In *Window > Plugin Manager,* click the *Install* button next to *Retractor.*
