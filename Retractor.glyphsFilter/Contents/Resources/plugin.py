@@ -32,7 +32,7 @@ class Retractor(FilterWithoutDialog):
 	@objc.python_method
 	def filter(self, layer, inEditView, customParameters):
 		selection = layer.selection
-		selectionCounts = inEditView and bool(selection)
+		selectionCounts = inEditView and selection
 
 		for thisPath in layer.paths:
 			for x in reversed( range( len( thisPath.nodes ))):
@@ -44,7 +44,7 @@ class Retractor(FilterWithoutDialog):
 						thisNode.type = LINE
 				elif selectionCounts:
 					prevNode = thisPath.nodes[x-1]
-					nextNode = thisPath.nodes[x+1]
+					nextNode = thisPath.nodes[(x+1)%len(thisPath.nodes)]
 					if thisNode.type != OFFCURVE:
 						if prevNode.type == OFFCURVE and prevNode in selection:
 							thisNode.type = LINE
